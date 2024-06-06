@@ -1,0 +1,33 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap");
+
+#root {
+	height: 100%;
+	background-color: #dee2e6;
+	display: grid;
+	grid-template-columns: 600px 1fr;
+}
+
+.information {
+	font-family: "Montserrat", sans-serif;
+	background-color: #f8f9fa;
+	padding: 20px 40px;
+}
+
+.information > p:nth-child(2) {
+	margin-top: 20px;
+}
+
+.preview {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 20px;
+	background-color: #dee2e6;
+}
+
+.cv {
+	font-family: "Calibri", "Times New Roman", sans-serif;
+	height: 700px;
+	width: 600px;
+	background-color: #fff;
+}

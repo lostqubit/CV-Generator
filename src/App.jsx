@@ -1,4 +1,7 @@
 import { useState } from "react";
+import addIcon from "./assets/add.svg";
+import editIcon from "./assets/edit.svg";
+import deleteOutlineIcon from "./assets/delete-outline.svg";
 import "./App.css";
 
 const defaultCV = {
@@ -6,6 +9,16 @@ const defaultCV = {
 	email: "john.doe@gmail.com",
 	phone: "+91 9962242844",
 	address: "Bangalore, IN",
+	education: [
+		{
+			id: crypto.randomUUID(),
+			institute: "Indian Institute of Technology, Roorkee",
+			degree: "B.Tech, Computer Science and Engineering",
+			"start-date": "15/01/2024",
+			"end-date": null,
+			location: "Roorkee, IN",
+		},
+	],
 };
 
 function App() {
@@ -24,6 +37,7 @@ function InfoForm({ data, setData }) {
 		<div className="information">
 			<Header />
 			<PersonalDetails data={data} setData={setData} />
+			<EducationDetails data={data} setData={setData} />
 		</div>
 	);
 }
@@ -78,6 +92,83 @@ function PersonalDetails({ data, setData }) {
 				setData={setData}
 			/>
 		</div>
+	);
+}
+
+function EducationDetails({ data, setData }) {
+	const [showEducationForm, setShowEducationForm] = useState(false);
+
+	return (
+		<div className="education-details">
+			<h2>Education</h2>
+			{showEducationForm ? (
+				<AddEducationForm setShowEducationForm={setShowEducationForm} />
+			) : (
+				<ViewEducation setShowEducationForm={setShowEducationForm} data={data} />
+			)}
+		</div>
+	);
+}
+
+function ViewEducation({ data, setShowEducationForm }) {
+	return (
+		<>
+			{data.education.map((educationItem) => {
+				return <EducationItem key={educationItem.id} education={educationItem} />;
+			})}
+			<div className="addEducation">
+				<button
+					className="addEducation-btn"
+					onClick={() => {
+						setShowEducationForm(true);
+					}}
+				>
+					<img src={addIcon} /> <span>Add Education</span>
+				</button>
+			</div>
+		</>
+	);
+}
+
+function EducationItem({ education }) {
+	return (
+		<div className="education-item">
+			<div>
+				<p>{education.institute}</p>
+				<p>{education.degree}</p>
+			</div>
+			<div>
+				<img src={editIcon} />
+				<img src={deleteOutlineIcon} />
+			</div>
+		</div>
+	);
+}
+
+function AddEducationForm({ setShowEducationForm }) {
+	return (
+		<>
+			<form id="education-form">
+				<InputField type="text" title="Institute" id="institute" placeholder="Enter school / university" />
+				<InputField type="text" title="Degree" id="degree" placeholder="Enter Degree / Field of Study" />
+				<div className="date">
+					<InputField type="date" title="Start Date" id="start-date" />
+					<InputField type="date" title="End Date" id="end-date" />
+				</div>
+				<InputField type="text" title="Location" id="location" placeholder="Enter Location" />
+			</form>
+			<div className="buttons">
+				<button className="delete">Delete</button>
+				<div className="cancel-save">
+					<button className="cancel" onClick={() => setShowEducationForm(false)}>
+						Cancel
+					</button>
+					<button form="education-form" className="save">
+						Save
+					</button>
+				</div>
+			</div>
+		</>
 	);
 }
 

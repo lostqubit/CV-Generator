@@ -41,8 +41,13 @@
 	margin-top: 20px;
 }
 
+.work-details {
+	margin-top: 10px;
+}
+
 .personal-details > h2,
-.education-details > h2 {
+.education-details > h2,
+.work-details > h2 {
 	font-weight: 600;
 	padding-bottom: 5px;
 	border-bottom: 2px solid black;
@@ -61,12 +66,29 @@ label {
 }
 
 input {
+	font-family: "Montserrat";
 	background-color: rgb(243, 244, 246);
 	padding: 10px;
 	height: 20px;
 	border: 1px solid #ccc;
 	outline: 0;
 	border-radius: 15px;
+}
+
+textarea {
+	font-family: "Montserrat";
+	resize: none;
+	background-color: rgb(243, 244, 246);
+	padding: 10px;
+	height: 50px;
+	border: 1px solid #ccc;
+	outline: 0;
+	border-radius: 15px;
+}
+
+textarea:focus {
+	box-shadow: 0 0 15px 5px #b0e0ee;
+	border: 2px solid #bebede;
 }
 
 input:focus {
@@ -83,7 +105,8 @@ input:focus {
 	width: 210px;
 }
 
-.education-item {
+.education-item,
+.experience-item {
 	cursor: default;
 	border: 2px solid rgba(0, 0, 0, 0.5);
 	border-radius: 15px;
@@ -95,41 +118,49 @@ input:focus {
 	transition: all 0.15s ease-in-out;
 }
 
-.education-item:hover {
+.education-item:hover,
+.experience-item:hover {
 	transform: translateY(-3px);
 	box-shadow: 0 0 15px 5px #b0e0ee;
 	border: 2px solid #bebede;
 }
 
-.education-item > div:first-child {
+.education-item > div:first-child,
+.experience-item > div:first-child {
 	display: flex;
 	flex-direction: column;
 }
 
-.education-item > div:first-child > p:first-child {
+.education-item > div:first-child > p:first-child,
+.experience-item > div:first-child > p:first-child {
 	font-weight: 500;
 }
 
-.education-item > div:first-child > p:last-child {
+.education-item > div:first-child > p:last-child,
+.experience-item > div:first-child > p:last-child {
 	font-size: 0.85rem;
 }
 
-.education-item > div:last-child {
+.education-item > div:last-child,
+.experience-item > div:last-child {
 	display: flex;
 	gap: 10px;
 }
 
-.education-item img {
+.education-item img,
+.experience-item img {
 	height: 1.25rem;
 	cursor: pointer;
 }
 
-.addEducation {
+.addEducation,
+.addExperience {
 	display: flex;
 	justify-content: flex-end;
 }
 
-.addEducation-btn {
+.addEducation-btn,
+.addExperience-btn {
 	background-color: #f8f9fa;
 	padding: 3px;
 	margin-top: 10px;
@@ -141,7 +172,8 @@ input:focus {
 	cursor: pointer;
 }
 
-.addEducation-btn > img {
+.addEducation-btn > img,
+.addExperience-btn > img {
 	height: 1.25rem;
 }
 

@@ -14,8 +14,8 @@ const defaultCV = {
 			id: crypto.randomUUID(),
 			institute: "Indian Institute of Technology, Roorkee",
 			degree: "B.Tech, Computer Science and Engineering",
-			"start-date": "15/01/2024",
-			"end-date": null,
+			"start-date": "2024-01-15",
+			"end-date": "",
 			location: "Roorkee, IN",
 		},
 	],
@@ -96,31 +96,45 @@ function PersonalDetails({ data, setData }) {
 }
 
 function EducationDetails({ data, setData }) {
-	const [showEducationForm, setShowEducationForm] = useState(false);
+	const [showEducationForm, setShowEducationForm] = useState(0);
 
 	return (
 		<div className="education-details">
 			<h2>Education</h2>
 			{showEducationForm ? (
-				<AddEducationForm setShowEducationForm={setShowEducationForm} />
+				<AddEducationForm
+					id={showEducationForm}
+					setShowEducationForm={setShowEducationForm}
+					data={data}
+					setData={setData}
+				/>
 			) : (
-				<ViewEducation setShowEducationForm={setShowEducationForm} data={data} />
+				<ViewEducation setShowEducationForm={setShowEducationForm} data={data} setData={setData} />
 			)}
 		</div>
 	);
 }
 
-function ViewEducation({ data, setShowEducationForm }) {
+function ViewEducation({ data, setData, setShowEducationForm }) {
 	return (
 		<>
 			{data.education.map((educationItem) => {
-				return <EducationItem key={educationItem.id} education={educationItem} />;
+				return (
+					<EducationItem
+						id={educationItem.id}
+						key={educationItem.id}
+						data={data}
+						setData={setData}
+						setShowEducationForm={setShowEducationForm}
+						education={educationItem}
+					/>
+				);
 			})}
 			<div className="addEducation">
 				<button
 					className="addEducation-btn"
 					onClick={() => {
-						setShowEducationForm(true);
+						setShowEducationForm(1);
 					}}
 				>
 					<img src={addIcon} /> <span>Add Education</span>
@@ -130,7 +144,7 @@ function ViewEducation({ data, setShowEducationForm }) {
 	);
 }
 
-function EducationItem({ education }) {
+function EducationItem({ id, data, setData, setShowEducationForm, education }) {
 	return (
 		<div className="education-item">
 			<div>
@@ -138,29 +152,133 @@ function EducationItem({ education }) {
 				<p>{education.degree}</p>
 			</div>
 			<div>
-				<img src={editIcon} />
-				<img src={deleteOutlineIcon} />
+				<img src={editIcon} onClick={() => setShowEducationForm(id)} />
+				<img
+					src={deleteOutlineIcon}
+					onClick={() =>
+						setData({
+							...data,
+							education: data.education.filter((educationItem) => educationItem.id !== id),
+						})
+					}
+				/>
 			</div>
 		</div>
 	);
 }
 
-function AddEducationForm({ setShowEducationForm }) {
+function AddEducationForm({ id, setShowEducationForm, data, setData }) {
+	const formValue = {
+		institute: "",
+		degree: "",
+		"start-date": "",
+		"end-date": "",
+		location: "",
+	};
+
+	if (id !== 1) {
+		const dataItem = data.education.filter((educationItem) => educationItem.id === id)[0];
+		formValue.institute = dataItem.institute;
+		formValue.degree = dataItem.degree;
+		formValue["start-date"] = dataItem["start-date"];
+		formValue["end-date"] = dataItem["end-date"];
+		formValue.location = dataItem.location;
+	}
+
 	return (
 		<>
-			<form id="education-form">
-				<InputField type="text" title="Institute" id="institute" placeholder="Enter school / university" />
-				<InputField type="text" title="Degree" id="degree" placeholder="Enter Degree / Field of Study" />
+			<form
+				id="education-form"
+				onSubmit={(event) => {
+					event.preventDefault();
+					const formdata = new FormData(event.target);
+					if (id === 1) {
+						const newEducationItem = {
+							id: crypto.randomUUID(),
+							institute: formdata.get("institute"),
+							degree: formdata.get("degree"),
+							"start-date": formdata.get("start-date"),
+							"end-date": formdata.get("end-date"),
+							location: formdata.get("location"),
+						};
+						const newData = { ...data };
+						newData.education.push(newEducationItem);
+						setData(newData);
+					} else {
+						const editedData = data.education.map((educationItem) => {
+							return educationItem.id === id
+								? {
+										id,
+										institute: formdata.get("institute"),
+										degree: formdata.get("degree"),
+										"start-date": formdata.get("start-date"),
+										"end-date": formdata.get("end-date"),
+										location: formdata.get("location"),
+								  }
+								: educationItem;
+						});
+						const newData = { ...data };
+						newData.education = editedData;
+						setData(newData);
+					}
+					setShowEducationForm(0);
+					event.target.reset();
+				}}
+			>
+				<InputField
+					type="text"
+					startingValue={formValue.institute}
+					title="Institute"
+					id="institute"
+					placeholder="Enter school / university"
+				/>
+				<InputField
+					type="text"
+					startingValue={formValue.degree}
+					title="Degree"
+					id="degree"
+					placeholder="Enter Degree / Field of Study"
+				/>
 				<div className="date">
-					<InputField type="date" title="Start Date" id="start-date" />
-					<InputField type="date" title="End Date" id="end-date" />
+					<InputField
+						type="date"
+						startingValue={formValue["start-date"]}
+						title="Start Date"
+						id="start-date"
+					/>
+					<InputField
+						required={false}
+						type="date"
+						startingValue={formValue["end-date"]}
+						title="End Date"
+						id="end-date"
+					/>
 				</div>
-				<InputField type="text" title="Location" id="location" placeholder="Enter Location" />
+				<InputField
+					required={false}
+					type="text"
+					startingValue={formValue.location}
+					title="Location"
+					id="location"
+					placeholder="Enter Location"
+				/>
 			</form>
 			<div className="buttons">
-				<button className="delete">Delete</button>
+				<button
+					className="delete"
+					onClick={() => {
+						if (id !== 1)
+							setData({
+								...data,
+								education: data.education.filter((educationItem) => educationItem.id !== id),
+							});
+						setShowEducationForm(0);
+					}}
+				>
+					Delete
+				</button>
 				<div className="cancel-save">
-					<button className="cancel" onClick={() => setShowEducationForm(false)}>
+					<button className="cancel" onClick={() => setShowEducationForm(0)}>
 						Cancel
 					</button>
 					<button form="education-form" className="save">
@@ -172,17 +290,44 @@ function AddEducationForm({ setShowEducationForm }) {
 	);
 }
 
-function InputField({ type, title, id, placeholder, maxLength, data, setData }) {
-	const onChange = (event) => {
-		setData({ ...data, [`${id}`]: `${event.target.value ? event.target.value : defaultCV[id]}` });
-	};
-
-	return (
-		<div className="input-field">
-			<label htmlFor={id}>{title}</label>
-			<input onChange={onChange} type={type} placeholder={placeholder} id={id} maxLength={maxLength} />
-		</div>
-	);
+function InputField({ required = true, startingValue = "", type, title, id, placeholder, maxLength, data, setData }) {
+	const [value, setValue] = useState(startingValue);
+	if (setData) {
+		return (
+			<div className="input-field">
+				<label htmlFor={id}>{title}</label>
+				<input
+					required={required}
+					onChange={(event) => {
+						setValue(event.target.value);
+						setData({ ...data, [`${id}`]: `${event.target.value ? event.target.value : defaultCV[id]}` });
+					}}
+					type={type}
+					placeholder={placeholder}
+					id={id}
+					name={id}
+					maxLength={maxLength}
+					value={value}
+				/>
+			</div>
+		);
+	} else {
+		return (
+			<div className="input-field">
+				<label htmlFor={id}>{title}</label>
+				<input
+					required={required}
+					onChange={(event) => setValue(event.target.value)}
+					type={type}
+					placeholder={placeholder}
+					id={id}
+					name={id}
+					maxLength={maxLength}
+					value={value}
+				/>
+			</div>
+		);
+	}
 }
 
 function Preview({ data }) {
@@ -193,6 +338,9 @@ function Preview({ data }) {
 				{data.email}
 				{data.phone}
 				{data.address}
+				{data.education.map((educationItem) => {
+					return <div key={educationItem.id}>{educationItem.institute}</div>;
+				})}
 			</div>
 		</div>
 	);

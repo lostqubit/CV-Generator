@@ -2,11 +2,14 @@ import { useState } from "react";
 import addIcon from "./assets/add.svg";
 import editIcon from "./assets/edit.svg";
 import deleteOutlineIcon from "./assets/delete-outline.svg";
+import locationIcon from "./assets/location.svg";
+import mailIcon from "./assets/mail.svg";
+import phoneIcon from "./assets/phone.svg";
 import "./App.css";
 
 const defaultCV = {
 	name: "John Doe",
-	email: "john.doe@gmail.com",
+	email: "john.doe@iitr.ac.in",
 	phone: "+91 9962242844",
 	address: "Bangalore, IN",
 	education: [
@@ -14,8 +17,8 @@ const defaultCV = {
 			id: crypto.randomUUID(),
 			institute: "Indian Institute of Technology, Roorkee",
 			degree: "B.Tech, Computer Science and Engineering",
-			"start-date": "2024-01-15",
-			"end-date": "",
+			"start-date": "2020-07-15",
+			"end-date": "2024-05-20",
 			location: "Roorkee, IN",
 		},
 	],
@@ -24,19 +27,21 @@ const defaultCV = {
 			id: crypto.randomUUID(),
 			title: "Software Development Engineer",
 			company: "Amazon",
-			"start-date": "",
+			"start-date": "2024-03-15",
 			"end-date": "",
 			location: "Bangalore, IN",
-			description: "test-1",
+			description:
+				"Designing and maintaining software applications, collaborating with teams for requirements, and performing code reviews and testing for quality and security.",
 		},
 		{
 			id: crypto.randomUUID(),
 			title: "DevOps Engineer",
 			company: "Zomato",
-			"start-date": "",
-			"end-date": "",
+			"start-date": "2023-02-23",
+			"end-date": "2024-01-25",
 			location: "Mumbai, IN",
-			description: "test-2",
+			description:
+				"Automating operations, managing CI/CD pipelines, and monitoring system performance for reliable application deployment.",
 		},
 	],
 };
@@ -90,7 +95,7 @@ function PersonalDetails({ data, setData }) {
 				title="Email"
 				id="email"
 				placeholder="john.doe@gmail.com"
-				maxLength="30"
+				maxLength="20"
 				data={data}
 				setData={setData}
 			/>
@@ -574,16 +579,84 @@ function Preview({ data }) {
 	return (
 		<div className="preview">
 			<div className="cv">
-				{data.name}
-				{data.email}
-				{data.phone}
-				{data.address}
-				{data.education.map((educationItem) => {
-					return <div key={educationItem.id}>{educationItem.institute}</div>;
-				})}
-				{data.experience.map((experienceItem) => {
-					return <div key={experienceItem.id}>{experienceItem.title}</div>;
-				})}
+				<PreviewHeader name={data.name} email={data.email} phone={data.phone} address={data.address} />
+				<div className="cv-details">
+					<div className="cv-education">
+						<h3>Education</h3>
+						{data.education.map((educationItem) => (
+							<EducationPreview key={educationItem.id} education={educationItem} />
+						))}
+					</div>
+					<div className="cv-experience">
+						<h3>Professional Experience</h3>
+						{data.experience.map((experienceItem) => (
+							<ExperiencePreview key={experienceItem.id} experience={experienceItem} />
+						))}
+					</div>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+function PreviewHeader({ name, email, phone, address }) {
+	return (
+		<div className="cv-header">
+			<h1>{name}</h1>
+			<div>
+				<div>
+					<img src={mailIcon} /> <span>{email}</span>
+				</div>
+				<div>
+					<img src={phoneIcon} /> <span>{phone}</span>
+				</div>
+				<div>
+					<img src={locationIcon} /> <span>{address}</span>
+				</div>
+			</div>
+		</div>
+	);
+}
+
+function EducationPreview({ education }) {
+	const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+	const startDate =
+		months[parseInt(education["start-date"].split("-")[1]) - 1] + " " + education["start-date"].split("-")[0];
+	const endDate = education["end-date"]
+		? months[parseInt(education["end-date"].split("-")[1]) - 1] + " " + education["end-date"].split("-")[0]
+		: "Present";
+	return (
+		<div>
+			<div>
+				<p className="preview-date">{startDate + " - " + endDate}</p>
+				<p className="preview-location">{education.location}</p>
+			</div>
+			<div>
+				<h4>{education.institute}</h4>
+				<p>{education.degree}</p>
+			</div>
+		</div>
+	);
+}
+
+function ExperiencePreview({ experience }) {
+	const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+	const startDate =
+		months[parseInt(experience["start-date"].split("-")[1]) - 1] + " " + experience["start-date"].split("-")[0];
+	const endDate = experience["end-date"]
+		? months[parseInt(experience["end-date"].split("-")[1]) - 1] + " " + experience["end-date"].split("-")[0]
+		: "Present";
+
+	return (
+		<div>
+			<div>
+				<p className="preview-date">{startDate + " - " + endDate}</p>
+				<p className="preview-location">{experience.location}</p>
+			</div>
+			<div>
+				<h4>{experience.title}</h4>
+				<p>{experience.company}</p>
+				<p>{experience.description}</p>
 			</div>
 		</div>
 	);

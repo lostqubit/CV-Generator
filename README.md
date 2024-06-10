@@ -4,6 +4,6 @@ The CV Generator App is a web application built with Vite, React, HTML and CSS t
 
 live demo : https://cv-generator-ruby.vercel.app/
 
-![image](https://github.com/lostqubit/CV-Generator/assets/31575513/9dca73b3-d784-45e9-b738-1bc4e2bb1abb)
+![image](https://github.com/lostqubit/CV-Generator/assets/31575513/04b0402f-fa22-401a-b69e-acead8281afc)
 
 Work done as a part of "[The Odin Project](https://www.theodinproject.com/paths/full-stack-javascript)" Open Source curriculum.

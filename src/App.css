@@ -6,6 +6,7 @@
 	background-color: #dee2e6;
 	display: grid;
 	grid-template-columns: 600px 1fr;
+	overflow: auto;
 }
 
 .information {
@@ -231,6 +232,7 @@ input:focus {
 }
 
 .cv {
+	break-after: avoid;
 	font-family: "Calibri", "Helvetica", sans-serif;
 	height: 700px;
 	width: 600px;
@@ -263,11 +265,7 @@ input:focus {
 .cv-header > div > div {
 	display: flex;
 	gap: 3px;
-}
-
-.cv-header img {
-	height: 1.25rem;
-	display: inline-block;
+	align-items: flex-start;
 }
 
 .cv-details {
@@ -305,4 +303,25 @@ input:focus {
 .cv-experience > div > div:last-child > p:last-child {
 	font-size: 0.9rem;
 	margin-top: 3px;
+}
+
+.download {
+	cursor: pointer;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	border-radius: 50%;
+	background-color: rgb(0, 107, 179);
+	opacity: 0.8;
+	padding: 10px;
+	border: none;
+}
+
+.download:hover {
+	opacity: 1;
+}
+
+.download > img {
+	width: 2.5rem;
+	height: 2.5rem;
 }

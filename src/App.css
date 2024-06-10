@@ -2,6 +2,11 @@
 @import url("https://fonts.googleapis.com/css?family=Lato:400,700");
 
 #root {
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	position: fixed;
 	height: 100%;
 	background-color: #dee2e6;
 	display: grid;

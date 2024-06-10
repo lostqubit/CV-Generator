@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { Resolution, usePDF } from "react-to-pdf";
 import addIcon from "./assets/add.svg";
 import editIcon from "./assets/edit.svg";
 import deleteOutlineIcon from "./assets/delete-outline.svg";
 import locationIcon from "./assets/location.svg";
 import mailIcon from "./assets/mail.svg";
 import phoneIcon from "./assets/phone.svg";
+import downloadIcon from "./assets/download-outline.svg";
 import "./App.css";
 
 const defaultCV = {
@@ -576,9 +578,29 @@ function InputField({ required = true, startingValue = "", type, title, id, plac
 }
 
 function Preview({ data }) {
+	const options = {
+		filename: "CV.pdf",
+		resolution: Resolution.HIGH,
+		page: {
+			format: [158, 185],
+		},
+		overrides: {
+			canvas: {
+				useCORS: true,
+				width: 600,
+				height: 700,
+			},
+		},
+	};
+
+	const { toPDF, targetRef } = usePDF(options);
+
 	return (
 		<div className="preview">
-			<div className="cv">
+			<button className="download" onClick={() => toPDF()}>
+				<img src={downloadIcon} />
+			</button>
+			<div ref={targetRef} className="cv">
 				<PreviewHeader name={data.name} email={data.email} phone={data.phone} address={data.address} />
 				<div className="cv-details">
 					<div className="cv-education">

@@ -12,7 +12,7 @@ import "./App.css";
 const defaultCV = {
 	name: "John Doe",
 	email: "john.doe@iitr.ac.in",
-	phone: "+91 9962242844",
+	phone: "+91 9851254786",
 	address: "Bangalore, IN",
 	education: [
 		{
@@ -96,7 +96,7 @@ function PersonalDetails({ data, setData }) {
 				type="email"
 				title="Email"
 				id="email"
-				placeholder="john.doe@gmail.com"
+				placeholder="john.doe@iitr.ac.in"
 				maxLength="20"
 				data={data}
 				setData={setData}
